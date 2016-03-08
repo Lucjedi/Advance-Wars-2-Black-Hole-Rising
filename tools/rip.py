@@ -215,3 +215,4 @@ else:
    print ('Op\xe7\xe3o diferente do esperado.')
    pressexit()
    sys.exit(0)
+
