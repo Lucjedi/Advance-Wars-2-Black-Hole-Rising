@@ -1,4 +1,7 @@
 
+#bh.gba
+ROM editada com acentuação.
+
 #NEWSR.txt
 Arquivo criado após utilizar a opção I (insert). Este é usado para calcular os ponteiros e adicionar o texto traduzido na rom.
 
