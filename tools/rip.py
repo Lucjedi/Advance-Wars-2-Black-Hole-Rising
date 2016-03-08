@@ -20,11 +20,8 @@ def dump():
        print ('Erro ao criar a tabela para extrair.')
        sys.exit(0)
 
-   #gravandodump = open('dump.txt', 'w')
-   gravandodump = open(raw_input("Insira o nome do arquivo a ser extra\xeddo: "), 'w')
+   gravandodump = open('dump.txt', 'w')
    gravandodump.truncate
-
-   print ('Aguarde o processamento de extra\xe7\xe3o %s.') % (languageselect)
 
    # Position first pointer
    arquivo.seek(offset)
@@ -76,16 +73,11 @@ def insert():
 
    try:
    #    arquivodump = open(raw_input("Digite o nome do arquivo extraido: "), "rbU")
-       arquivodump = open(raw_input("Digite o nome do arquivo extra\xeddo: "), "rbU")
+       arquivodump = open('dump.txt', "rbU")
    except:
-       print ('Erro: Arquivo n\xe3o encontrado!')
+       print ('Erro: Arquivo dump.txt n\xe3o encontrado!')
        pressexit()
        sys.exit(0)
-   
-   num_lines = sum(1 for line in arquivodump)
-   if num_lines != int(int('3328')):
-      print ('O arquivo extra\xeddo deve conter 3328 linhas traduzidas. O lido foi %s.') % (num_lines)
-      sys.exit(0)
 
    gravandoinsert = open('NEWSR.txt', 'wb')
    gravandoinsert.truncate
@@ -94,8 +86,6 @@ def insert():
 
    ponteiros = []
    ponteiros.insert(0,str(soma))
-
-   print ('Aguarde o primeiro processamento de inser\xe7\xe3o no Idioma Ingl\xeas.')
    
    while True:
       def Gravar(valor):
@@ -126,11 +116,11 @@ def insert():
    del table
    gravandoinsert.close
    arquivodump.close
-   contentrom = arquivo.read(int('7843164'))
+   contentrom = arquivo.read(offset)
    
-   gravandonewrom = open(raw_input("Digite o nome da nova Rom traduzida: "), 'wb')
+   gravandonewrom = open('NewRom.gba', 'wb')
    gravandonewrom.truncate
-   print ('Aguarde o segundo processamento de inser\xe7\xe3o no Idioma Ingl\xeas.')
+   
    gravandonewrom.write(contentrom)
    
    for valores in reversed(ponteiros):
@@ -178,6 +168,7 @@ def language():
            offset = int('7843180')
        else:
            sys.exit(0)
+       print ('Aguarde o processamento para o idioma %s.') % (languageselect)
    except:
        print ('Idioma n\xe3o encontrado.')
        pressexit()
@@ -194,8 +185,8 @@ except:
 def openfile(option):
    global arquivo
    try:
-      arquivo = open(raw_input("Insira o nome da rom original: "), option)
-      #arquivo = open('bh.gba', option)
+      #    arquivo = open(raw_input("Filename Army 2's rom: "), "rbU")
+      arquivo = open('bh.gba', option)
    except:
       print ('Erro: Arquivo n\xe3o encontrado!')
       pressexit()
@@ -209,10 +200,9 @@ if selectDI == 'D':
 elif selectDI == 'I':
    openfile ("rb")
    optionlg = 'Inserir'
-   #language()
+   language()
    insert()
 else:
    print ('Op\xe7\xe3o diferente do esperado.')
    pressexit()
    sys.exit(0)
-
