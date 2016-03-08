@@ -20,7 +20,7 @@ def dump():
        print ('Erro ao criar a tabela para extrair.')
        sys.exit(0)
 
-   gravandodump = open('dump.txt', 'w')
+   gravandodump = open(raw_input('Digite um nome para o arquivo extraido: '), 'w')
    gravandodump.truncate
 
    # Position first pointer
@@ -72,12 +72,11 @@ def insert():
       sys.exit(0)
 
    try:
-   #    arquivodump = open(raw_input("Digite o nome do arquivo extraido: "), "rbU")
-       arquivodump = open('dump.txt', "rbU")
+      arquivodump = open(raw_input('Digite o nome do arquivo extraido: '), "rbU")
    except:
-       print ('Erro: Arquivo dump.txt n\xe3o encontrado!')
-       pressexit()
-       sys.exit(0)
+      print ('Erro: Arquivo dump.txt n\xe3o encontrado!')
+      pressexit()
+      sys.exit(0)
 
    gravandoinsert = open('NEWSR.txt', 'wb')
    gravandoinsert.truncate
@@ -116,9 +115,9 @@ def insert():
    del table
    gravandoinsert.close
    arquivodump.close
-   contentrom = arquivo.read(offset)
+   contentrom = arquivo.read(int('7843164'))
    
-   gravandonewrom = open('NewRom.gba', 'wb')
+   gravandonewrom = open(raw_input('Digite um nome para a ROM traduzida: '), 'wb')
    gravandonewrom.truncate
    
    gravandonewrom.write(contentrom)
@@ -168,13 +167,12 @@ def language():
            offset = int('7843180')
        else:
            sys.exit(0)
-       print ('Aguarde o processamento para o idioma %s.') % (languageselect)
    except:
        print ('Idioma n\xe3o encontrado.')
        pressexit()
        sys.exit(0)
 
-selectDI = raw_input("Aperte D para extrair ou I para inserir:\n").upper()
+selectDI = raw_input("Aperte D para extrair ou I para inserir: ").upper()
 
 try:
    mapa = open('table.txt','rbU')
@@ -200,7 +198,6 @@ if selectDI == 'D':
 elif selectDI == 'I':
    openfile ("rb")
    optionlg = 'Inserir'
-   language()
    insert()
 else:
    print ('Op\xe7\xe3o diferente do esperado.')
