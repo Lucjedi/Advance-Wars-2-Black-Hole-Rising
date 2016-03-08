@@ -1,20 +1,161 @@
 #!/usr/bin/python
 import sys
 import binascii
+import os
 print ('---------------------------------------')
 
+def pressexit():
+   raw_input('Aperte ENTER para sair...')
 def dump():
+   global languageselect
+   global offset
    ## Verifica arquivo de entrada
+
+   table = {}
    try:
-   #    arquivo = open(raw_input("Filename Army 2's rom: "), "rbU")
-       arquivo = open('bh.gba', "rbU")
+       for i in mapa.readlines():
+           table[i.split(';')[0]] = i.split(';')[1]
+           mapa.close
    except:
-       print ('Error: File not found!')
-       raw_input('Press ENTER to exit...')
+       print ('Erro ao criar a tabela para extrair.')
        sys.exit(0)
 
+   gravandodump = open('dump.txt', 'w')
+   gravandodump.truncate
+
+   # Position first pointer
+   arquivo.seek(offset)
+
+   def capturePONT():
+      def captureTXT():
+         arquivo.seek(capHex)
+         while True:
+            hexCapturado = arquivo.read(1)
+            if hexCapturado.encode("hex") == '00':
+               gravandodump.write('\n')
+               break
+            if hexCapturado == '\n':
+               gravandodump.write('#')
+            else:
+               try:
+                  gravandodump.write(table[hexCapturado.encode("hex")])
+               except:
+                  gravandodump.write('$'+hexCapturado.encode("hex"))
+         gravandodump.close
+
+      global capHex
+      arquivo.seek(offset)
+      OffhexCapturado = arquivo.read(4).encode("hex")
+      capHex = int(OffhexCapturado[6:8]+OffhexCapturado[4:6]+OffhexCapturado[2:4]+OffhexCapturado[0:2], 16) - 134217728
+
+      captureTXT()
+   while True:
+      if offset >= int('7909724'):
+          pressexit()
+          break
+      else:
+          capturePONT()
+      offset += 20
+
+   arquivo.close
+
+def insert():
+
+   table = {}
+
    try:
-       languageselect = raw_input("Select Language to Dump.\nEN: English\nFR: Fran\xe7ais\nDE: Deutsch\nES: Espa\xf1ol\nIT: Italiano:\n")
+      for i in mapa.readlines():
+         table[i.split(';')[1]] = i.split(';')[0]
+         mapa.close
+   except:
+      print ('Erro ao criar a tabela para inserir.')
+      sys.exit(0)
+
+   try:
+   #    arquivodump = open(raw_input("Digite o nome do arquivo extraido: "), "rbU")
+       arquivodump = open('dump.txt', "rbU")
+   except:
+       print ('Erro: Arquivo dump.txt n\xe3o encontrado!')
+       pressexit()
+       sys.exit(0)
+
+   gravandoinsert = open('NEWSR.txt', 'wb')
+   gravandoinsert.truncate
+
+   soma = int('142145784')
+
+   ponteiros = []
+   ponteiros.insert(0,str(soma))
+   
+   while True:
+      def Gravar(valor):
+         gravandoinsert.write(binascii.a2b_hex(''.join(valor)))
+
+      hexCapturado = arquivodump.read(1)
+      if hexCapturado == '':
+         break
+      elif hexCapturado == '\n':
+         hexCapturado = arquivodump.read(1)
+         if hexCapturado == '':
+            break
+         else:
+            arquivodump.seek(arquivodump.tell()-1)
+            Gravar('00')
+            soma += 1
+            ponteiros.insert(0,str(soma))
+      elif hexCapturado == '$':
+         hexCapturado = arquivodump.read(2)
+         Gravar(hexCapturado)
+         soma += 1
+      else:
+         try:
+            Gravar(table[hexCapturado])
+            soma += 1
+         except:
+            print ('Erro: Caracter %s n\xe3ao encontrado na tabela (table.txt).') % (hexCapturado)
+   del table
+   gravandoinsert.close
+   arquivodump.close
+   contentrom = arquivo.read(offset)
+   
+   gravandonewrom = open('NewRom.gba', 'wb')
+   gravandonewrom.truncate
+   
+   gravandonewrom.write(contentrom)
+   
+   for valores in reversed(ponteiros):
+      valores = hex(int(valores))[2:].zfill(8)
+      invertvalores = valores[6:8]+valores[4:6]+valores[2:4]+valores[0:2]
+      gravandonewrom.write(binascii.a2b_hex(''.join(invertvalores)))
+      contentrom = arquivo.read(4)
+      contentrom = arquivo.read(16)
+      gravandonewrom.write(contentrom)
+   del ponteiros
+   contentrom = arquivo.read(18332)
+   gravandonewrom.write(contentrom)
+   gravandoinsert = open('NEWSR.txt', 'rb')
+   contentrom = gravandoinsert.read()
+   gravandonewrom.write(contentrom)
+   gravandoinsert.close
+   del contentrom
+   arquivo.close
+
+   while True:
+      finalarq = gravandonewrom.tell()
+      if finalarq == int('8388608'):
+         break
+      else:
+         gravandonewrom.write('\xff')
+   gravandonewrom.close
+   pressexit()
+
+#7928044
+
+def language():
+   global languageselect
+   global offset
+   try:
+       languageselect = raw_input('Escolha o idioma conforme as op\xe7\xf5es para '+optionlg+'.\nEN: English\nFR: Fran\xe7ais\nDE: Deutsch\nES: Espa\xf1ol\nIT: Italiano\n').upper()
        if languageselect == 'EN':
            offset = int('7843164')
        elif languageselect == 'FR':
@@ -27,127 +168,41 @@ def dump():
            offset = int('7843180')
        else:
            sys.exit(0)
-       print ('Dump %s language.') % (languageselect)
+       print ('Aguarde o processamento para o idioma %s.') % (languageselect)
    except:
-       raw_input('Language not found\nPress ENTER to exit...')
+       print ('Idioma n\xe3o encontrado.')
+       pressexit()
        sys.exit(0)
 
-   try:
-       mapa = open('table.txt','rbU')
-   except:
-       print ('Failed to open file table.txt.')
-       sys.exit(0)
-
-   table = {}
-   try:
-       for i in mapa.readlines():
-           table[i.split(';')[0]] = i.split(';')[1]
-   except:
-       print ('Failed to create table.')
-       sys.exit(0)
-
-   gravando = open('dump.txt', 'w')
-   gravando.truncate
-
-   gravandoPT = open('dumpPT.txt', 'w')
-   gravandoPT.truncate
-
-   # Position first pointer
-   arquivo.seek(offset)
-
-   def capturePONT():
-      def captureTXT():
-         arquivo.seek(capHex)
-         while True:
-            hexCapturado = arquivo.read(1)
-            if hexCapturado.encode("hex") == '00':
-               gravando.write('\n')
-               break
-            elif hexCapturado.encode("hex") == '0a':
-               gravando.write('#')
-            else:
-               try:
-                  gravando.write(table[hexCapturado.encode("hex")])
-               except:
-                  gravando.write('$'+hexCapturado.encode("hex"))
-
-      global capHex
-      arquivo.seek(offset)
-      OffhexCapturado = arquivo.read(4).encode("hex")
-      capHex = int(OffhexCapturado[6:8]+OffhexCapturado[4:6]+OffhexCapturado[2:4]+OffhexCapturado[0:2], 16) - 134217728
-
-      captureTXT()
-   while True:
-      if offset >= int('7909724'):
-          raw_input('Press ENTER to exit...')
-          break
-      else:
-          gravandoPT.write(str(offset)+'\n')
-          capturePONT()
-      offset += 20
-   
-   arquivo.close
-   gravando.close
-   gravandoPT.close
-
-def insert():
-   try:
-      mapa = open('table.txt','rbU')
-   except:
-      print ('Failed to open file table.txt.')
-      sys.exit(0)
-
-   table = {}
-
-   try:
-      for i in mapa.readlines():
-         table[i.split(';')[1]] = i.split(';')[0]
-   except:
-      print ('Failed to create table.')
-      sys.exit(0)
-
-   try:
-   #    arquivo = open(raw_input("Filename PT-BR: "), "rbU")
-       arquivo = open('dumpPTBR.txt', "rbU")
-   except:
-       print ('Error: File PT-BR not found!')
-       raw_input('Press ENTER to exit...')
-       sys.exit(0)
-
-   gravando = open('NEWSR.txt', 'wb')
-   gravando.truncate
-
-   while True:
-      def Gravar(valor):
-         gravando.write(binascii.a2b_hex(''.join(valor)))
-         
-      hexCapturado = arquivo.read(1)
-      if hexCapturado == '':
-         break
-      elif hexCapturado == '\n':
-         Gravar('00')
-      elif hexCapturado == '$':
-         hexCapturado = arquivo.read(2)
-         Gravar(hexCapturado)
-      else:
-         try:
-            Gravar(table[hexCapturado])
-         except:
-            print ('ERRO NAO IDENTIFICADO. %s') % (hexCapturado)
-   raw_input('Press ENTER to exit...')
-   arquivo.close
-   gravando.close
-
-#7928044
+selectDI = raw_input("Aperte D para extrair ou I para inserir:\n").upper()
 
 try:
-   selectDI = raw_input("Select 1 to Dump or 2 to Insert:\n")
-   if selectDI == '1':
-       dump()
-   elif selectDI == '2':
-       insert()
-   else:
-       sys.exit(0)
+   mapa = open('table.txt','rbU')
 except:
-    raw_input('Dump/insert not found\nPress ENTER to exit...')
-    sys.exit(0)
+   print ('Erro ao abrir o arquivo table.txt.')
+   sys.exit(0)
+
+def openfile(option):
+   global arquivo
+   try:
+      #    arquivo = open(raw_input("Filename Army 2's rom: "), "rbU")
+      arquivo = open('bh.gba', option)
+   except:
+      print ('Erro: Arquivo n\xe3o encontrado!')
+      pressexit()
+      sys.exit(0)
+
+if selectDI == 'D':
+   openfile ("rbU")
+   optionlg = 'Extrair'
+   language()
+   dump()
+elif selectDI == 'I':
+   openfile ("rb")
+   optionlg = 'Inserir'
+   language()
+   insert()
+else:
+   print ('Op\xe7\xe3o diferente do esperado.')
+   pressexit()
+   sys.exit(0)
