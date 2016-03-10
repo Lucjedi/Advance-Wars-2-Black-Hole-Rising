@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 import sys
 import binascii
@@ -74,7 +75,7 @@ def insert():
    try:
       arquivodump = open(raw_input('Digite o nome do arquivo extraido: '), "rbU")
    except:
-      print ('Erro: Arquivo dump.txt n\xe3o encontrado!')
+      print ('Erro: Arquivo nao encontrado!')
       pressexit()
       sys.exit(0)
 
@@ -111,14 +112,19 @@ def insert():
             Gravar(table[hexCapturado])
             soma += 1
          except:
-            print ('Erro: Caracter %s n\xe3ao encontrado na tabela (table.txt).') % (hexCapturado)
+            print ('Erro: Caracter %s nao encontrado na tabela (table.txt).') % (hexCapturado)
    del table
    gravandoinsert.close
    arquivodump.close
-   contentrom = arquivo.read(int('7843164'))
+   contentrom = arquivo.read(offset)
+
+   try:
+      gravandonewrom = open(raw_input('Digite um nome para a ROM traduzida: '), 'wb')
+      gravandonewrom.truncate
+   except:
+      print ('Erro: Nao foi possivel criar o arquivo traduzido.')
+      
    
-   gravandonewrom = open(raw_input('Digite um nome para a ROM traduzida: '), 'wb')
-   gravandonewrom.truncate
    
    gravandonewrom.write(contentrom)
    
@@ -130,18 +136,19 @@ def insert():
       contentrom = arquivo.read(16)
       gravandonewrom.write(contentrom)
    del ponteiros
-   contentrom = arquivo.read(18332)
+   contentrom = arquivo.read(offcontentlg) # 18332
    gravandonewrom.write(contentrom)
    gravandoinsert = open('NEWSR.txt', 'rb')
    contentrom = gravandoinsert.read()
    gravandonewrom.write(contentrom)
+   gravandonewrom.write('\x00')
    gravandoinsert.close
    del contentrom
    arquivo.close
 
    while True:
       finalarq = gravandonewrom.tell()
-      if finalarq == int('8388608'):
+      if finalarq == int('33554432'):
          break
       else:
          gravandonewrom.write('\xff')
@@ -152,26 +159,32 @@ def insert():
 
 def language():
    global languageselect
+   global offcontentlg
    global offset
    try:
-       languageselect = raw_input('Escolha o idioma conforme as op\xe7\xf5es para '+optionlg+'.\nEN: English\nFR: Fran\xe7ais\nDE: Deutsch\nES: Espa\xf1ol\nIT: Italiano\n').upper()
-       if languageselect == 'EN':
-           offset = int('7843164')
-       elif languageselect == 'FR':
-           offset = int('7843168')
-       elif languageselect == 'DE':
-           offset = int('7843172')
-       elif languageselect == 'ES':
-           offset = int('7843176')
-       elif languageselect == 'IT':
-           offset = int('7843180')
-       else:
-           sys.exit(0)
+      languageselect = raw_input(optionlg+'.\nEN: English\nFR: Francais\nDE: Deutsch\nES: Espanol\nIT: Italiano\n').upper()
+      if languageselect == 'EN':
+         offcontentlg = int('18332')
+         offset = int('7843164')
+      elif languageselect == 'FR':
+         offcontentlg = int('18328')
+         offset = int('7843168')
+      elif languageselect == 'DE':
+         offcontentlg = int('18324')
+         offset = int('7843172')
+      elif languageselect == 'ES':
+         offcontentlg = int('18320')
+         offset = int('7843176')
+      elif languageselect == 'IT':
+         offcontentlg = int('18316')
+         offset = int('7843180')
+      else:
+         sys.exit(0)
    except:
-       print ('Idioma n\xe3o encontrado.')
-       pressexit()
-       sys.exit(0)
-
+      print ('Idioma nao encontrado.')
+      pressexit()
+      sys.exit(0)
+      
 selectDI = raw_input("Aperte D para extrair ou I para inserir: ").upper()
 
 try:
@@ -183,23 +196,23 @@ except:
 def openfile(option):
    global arquivo
    try:
-      #    arquivo = open(raw_input("Filename Army 2's rom: "), "rbU")
       arquivo = open('bh.gba', option)
    except:
-      print ('Erro: Arquivo n\xe3o encontrado!')
+      print ('Erro: Arquivo nao encontrado!')
       pressexit()
       sys.exit(0)
 
 if selectDI == 'D':
    openfile ("rbU")
-   optionlg = 'Extrair'
+   optionlg = 'Escolha o Idioma para EXTRAIR.'
    language()
    dump()
 elif selectDI == 'I':
    openfile ("rb")
-   optionlg = 'Inserir'
+   optionlg = 'Escolha o Idioma no qual deseja SUBSTITUIR.'
+   language()
    insert()
 else:
-   print ('Op\xe7\xe3o diferente do esperado.')
+   print ('Opcoes diferente do esperado.')
    pressexit()
    sys.exit(0)
