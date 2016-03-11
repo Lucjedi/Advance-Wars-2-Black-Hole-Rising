@@ -5,3 +5,6 @@ Novo: 7DC7F0 Invert=> F0C77D08
 Campaign Pequeno_0026A9A8 (303) Invert=> A8A92608
 Novo: 7DCB50 Invert=> 50CB7D08
 ++++++++++++++++++++++++++++++++++++++
+Continue New Map CO Hard_0026B07C (694) Invert=> 7CB02608
+Novo: 7DCCA0 Invert=> A0CC7D08
+++++++++++++++++++++++++++++++++++++++
