@@ -23,6 +23,7 @@ def dump():
 
    gravandodump = open(raw_input('Digite um nome para o arquivo extraido: '), 'w')
    gravandodump.truncate
+   
 
    # Position first pointer
    arquivo.seek(offset)
@@ -144,15 +145,19 @@ def insert():
    gravandonewrom.write('\x00')
    gravandoinsert.close
    del contentrom
-   arquivo.close
+   arquivo.seek(offset)
 
    while True:
       finalarq = gravandonewrom.tell()
-      if finalarq == int('33554432'):
+      if finalarq == int('8243184'):
          break
       else:
          gravandonewrom.write('\xff')
+   arquivo.seek(int('8243184'))
+   contentrom = arquivo.read()
+   gravandonewrom.write(contentrom)
    gravandonewrom.close
+   arquivo.close
    pressexit()
 
 #7928044
