@@ -8,3 +8,55 @@ Novo: 7DCB50 Invert=> 50CB7D08
 Continue New Map CO Hard_0026B07C (694) Invert=> 7CB02608
 Novo: 7DCCA0 Invert=> A0CC7D08
 ++++++++++++++++++++++++++++++++++++++
+Battlemaps_00269CBC (671) Invert=> BC9C2608
+Novo: 7DCF40 Invert=> 40CF7D08
+++++++++++++++++++++++++++++++++++++++
+Battlemaps pequeno_0026ABF8 (317) Invert=> F8AB2608
+Novo: 7DD248 Invert=> 48D27D08
+++++++++++++++++++++++++++++++++++++++
+War Room pequeno_0026AF4C (303) Invert=> 4CAF2608
+Novo: 7DD3A0 Invert=> A0D37D08
+++++++++++++++++++++++++++++++++++++++
+Prologue_00296870 (1647) Invert=> 70682908
+MESMA IMAGEM ESPANHOL
+Novo: 297BB0 Invert=> B07B2908
+++++++++++++++++++++++++++++++++++++++
+Level Start Map_002AC264 (352) Invert=> 64C22A08
+Novo: 7DD4F0 Invert=> F0D47D08
+++++++++++++++++++++++++++++++++++++++
+a_00216E9C (131) Invert=> 9C6E2108
+Novo: 7DD670 Invert=> 70D67D08
+++++++++++++++++++++++++++++++++++++++
+n_00217144 (107) Invert=> 44712108
+Novo: 7DD714 Invert=> 14D77D08
+++++++++++++++++++++++++++++++++++++++
+o_00217234 (118) Invert=> 34722108
+Novo: 7DD7A8 Invert=> A8D77D08
+++++++++++++++++++++++++++++++++++++++
+DRAW_00272910 (368) Invert=> 10292708
+MESMA IMAGEM ESPANHOL
+Novo: 272CE0 Invert=> E02C2708
+++++++++++++++++++++++++++++++++++++++
+Cancel Back OK name_002A25E0 (471) Invert=> E0252A08
+Novo: 7DD840 Invert=> 40D87D08
+++++++++++++++++++++++++++++++++++++++
+WEAPON_002A2F4C (418) Invert=> 4C2F2A08
+MESMA IMAGEM ESPANHOL
+Novo: 2A3428 Invert=> 28342A08
+++++++++++++++++++++++++++++++++++++++
+DEFEAT_0029DFC0 (2648) Invert=> C0DF2908
+MESMA IMAGEM ESPANHOL
+Novo: 29FC68 Invert=> 68FC2908
+++++++++++++++++++++++++++++++++++++++
+CAMPAIGN CLEAR_002AD604 (1984) Invert=> 04D62A08
+Novo: 7DDA50 Invert=> 50DA7D08
+++++++++++++++++++++++++++++++++++++++
+A Button B Button START SELECT GALLERY no_002B3828 (1097) Invert=> 28382B08
+Novo: 7DE260 Invert=> 60E27D08
+++++++++++++++++++++++++++++++++++++++
+SINGLE-PAK MULTI-PAK TRADE MAPS_002BD3B0 (2065) Invert=> B0D32B08
+Novo: 7DE6C8 Invert=> C8E67D08
+++++++++++++++++++++++++++++++++++++++
+Replace current data_002BFC78 (531) Invert=> 78FC2B08
+Novo: 7DEFB0 Invert=> B0EF7D08
+++++++++++++++++++++++++++++++++++++++
