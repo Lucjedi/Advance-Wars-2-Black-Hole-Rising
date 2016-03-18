@@ -60,3 +60,6 @@ Novo: 7DE6C8 Invert=> C8E67D08
 Replace current data_002BFC78 (531) Invert=> 78FC2B08
 Novo: 7DEFB0 Invert=> B0EF7D08
 ++++++++++++++++++++++++++++++++++++++
+Units Deployed_00124914 (384) Invert=> 14491208
+Novo: 7DF1F0 Invert=> F0F17D08
+++++++++++++++++++++++++++++++++++++++
