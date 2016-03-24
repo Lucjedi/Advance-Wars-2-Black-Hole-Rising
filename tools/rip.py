@@ -201,7 +201,7 @@ except:
 def openfile(option):
    global arquivo
    try:
-      arquivo = open('bh.gba', option)
+      arquivo = open('teste.gba', option)
    except:
       print ('Erro: Arquivo nao encontrado!')
       pressexit()
